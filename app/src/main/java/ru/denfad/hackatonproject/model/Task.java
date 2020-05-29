@@ -7,24 +7,30 @@ public class Task {
     private String info;
     private String type;
     private Integer goal;
+    private String startDate;
+    private String endDate;
     private Integer progress;
     private Boolean done;
 
-    public Task(int id, String title, String info, String type, Integer goal, Integer progress, Boolean done) {
+    public Task(int id, String title, String info, String type, Integer goal,String startDate,String endDate, Integer progress, Boolean done) {
         this.id = id;
         this.title = title;
         this.info = info;
         this.type = type;
         this.goal = goal;
+        this.startDate=startDate;
+        this.endDate=endDate;
         this.progress = progress;
         this.done = done;
     }
 
-    public Task(String title, String info, String type, Integer goal, Integer progress, Boolean done) {
+    public Task(String title, String info, String type, Integer goal,String startDate,String endDate, Integer progress, Boolean done) {
         this.title = title;
         this.info = info;
         this.type = type;
         this.goal = goal;
+        this.startDate=startDate;
+        this.endDate=endDate;
         this.progress = progress;
         this.done = done;
     }
@@ -83,6 +89,22 @@ public class Task {
 
     public void setDone(Boolean done) {
         this.done = done;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public void updateProgress(int delta){this.progress=this.progress+delta;}

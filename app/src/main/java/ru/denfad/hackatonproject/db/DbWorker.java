@@ -23,13 +23,15 @@ class DbWorker  extends DbStructure{
         mDataBase = mOpenHelper.getWritableDatabase();
     }
 
-    void updateTask(int id, String title, String info, String type, Integer goal, Integer progress, Boolean done){
+    void updateTask(int id, String title, String info, String type, Integer goal,String startDate,String endDate, Integer progress, Boolean done){
         ContentValues cv = new ContentValues();
 
         cv.put(TASK_TITLE,title);
         cv.put(TASK_INFO,info);
         cv.put(TASK_TYPE,type);
         cv.put(TASK_GOAL, goal);
+        cv.put(TASK_START_DATE,startDate);
+        cv.put(TASK_ENDING_DATE,endDate);
         cv.put(TASK_PROGRESS,progress);
         cv.put(TASK_DONE, done ? 1 : 0);
 
@@ -49,19 +51,23 @@ class DbWorker  extends DbStructure{
         String info = mCursor.getString(2);//info
         String type = mCursor.getString(3);
         int goal = mCursor.getInt(4);//goal
-        int progress = mCursor.getInt(5); //progress
-        Boolean done = mCursor.getInt(6)==1;
+        String startDate = mCursor.getString(5);//start date
+        String endDate = mCursor.getString(6);//start date
+        int progress = mCursor.getInt(7); //progress
+        Boolean done = mCursor.getInt(8)==1;
 
-        return new Task(taskId,title,info,type,goal,progress,done);
+        return new Task(taskId,title,info,type,goal,startDate,endDate,progress,done);
     }
 
-    void insertTask(String title, String info, String type, Integer goal, Integer progress, Boolean done){
+    void insertTask(String title, String info, String type, Integer goal,String startDate,String endDate, Integer progress, Boolean done){
         ContentValues cv = new ContentValues();
 
         cv.put(TASK_TITLE,title);
         cv.put(TASK_INFO,info);
         cv.put(TASK_TYPE,type);
         cv.put(TASK_GOAL, goal);
+        cv.put(TASK_START_DATE,startDate);
+        cv.put(TASK_ENDING_DATE,endDate);
         cv.put(TASK_PROGRESS,progress);
         cv.put(TASK_DONE, done ? 1 : 0);
         mDataBase.insert(TABLE_TASKS, null, cv);
@@ -80,14 +86,61 @@ class DbWorker  extends DbStructure{
                 String info = mCursor.getString(2);//info
                 String type = mCursor.getString(3);
                 int goal = mCursor.getInt(4);//goal
-                int progress = mCursor.getInt(5); //progress
-                Boolean done = mCursor.getInt(6)==1;
-                arr.add(new Task(taskId,title,info,type,goal,progress,done));
+                String startDate = mCursor.getString(5);//start date
+                String endDate = mCursor.getString(6);//start date
+                int progress = mCursor.getInt(7); //progress
+                Boolean done = mCursor.getInt(8)==1;
+                arr.add(new Task(taskId,title,info,type,goal,startDate,endDate,progress,done));
             }while(mCursor.moveToNext());
         }
         return arr;
     }
 
+    List<Task> selectTasksByType(String t){
+        Cursor mCursor = mDataBase.query(TABLE_TASKS,null,TASK_TYPE + " = ?", new String[]{t},null,null,null);
+
+        List<Task> arr = new ArrayList<>();
+        mCursor.moveToFirst();
+
+        if(!mCursor.isAfterLast()){
+            do{
+                int taskId = mCursor.getInt(0);//id
+                String title = mCursor.getString(1); //title
+                String info = mCursor.getString(2);//info
+                String type = mCursor.getString(3);
+                int goal = mCursor.getInt(4);//goal
+                String startDate = mCursor.getString(5);//start date
+                String endDate = mCursor.getString(6);//start date
+                int progress = mCursor.getInt(7); //progress
+                Boolean done = mCursor.getInt(8)==1;
+                arr.add(new Task(taskId,title,info,type,goal,startDate,endDate,progress,done));
+            }while(mCursor.moveToNext());
+        }
+        return arr;
+    }
+
+    List<Task> selectDoneTaskByType(String t){
+        Cursor mCursor = mDataBase.query(TABLE_TASKS,null,TASK_TYPE + " = ? AND "+TASK_DONE+" =?", new String[]{t,String.valueOf(1)},null,null,null);
+
+        List<Task> arr = new ArrayList<>();
+        mCursor.moveToFirst();
+
+        if(!mCursor.isAfterLast()){
+            do{
+                int taskId = mCursor.getInt(0);//id
+                String title = mCursor.getString(1); //title
+                String info = mCursor.getString(2);//info
+                String type = mCursor.getString(3);
+                int goal = mCursor.getInt(4);//goal
+                String startDate = mCursor.getString(5);//start date
+                String endDate = mCursor.getString(6);//start date
+                int progress = mCursor.getInt(7); //progress
+                Boolean done = mCursor.getInt(8)==1;
+                arr.add(new Task(taskId,title,info,type,goal,startDate,endDate,progress,done));
+            }while(mCursor.moveToNext());
+        }
+        return arr;
+    }
     private class OpenHelper extends SQLiteOpenHelper{
 
         OpenHelper(Context context) {
@@ -103,6 +156,8 @@ class DbWorker  extends DbStructure{
                     TASK_INFO+" TEXT, "+
                     TASK_TYPE+" TEXT, "+
                     TASK_GOAL+" INTEGER, "+
+                    TASK_START_DATE+" TEXT, "+
+                    TASK_ENDING_DATE+" TEXT, "+
                     TASK_PROGRESS+" INTEGER, "+
                     TASK_DONE+" INTEGER DEFAULT 0 );";
 

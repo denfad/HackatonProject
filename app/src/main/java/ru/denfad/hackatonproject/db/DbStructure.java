@@ -12,6 +12,8 @@ class DbStructure{
     static final String TASK_INFO = "info";
     static final String TASK_TYPE = "type";
     static final String TASK_GOAL = "goal";
+    static final String TASK_START_DATE = "start_date";
+    static final String TASK_ENDING_DATE = "ending_date";
     static final String TASK_PROGRESS="progress";
     static final String TASK_DONE = "done";
 

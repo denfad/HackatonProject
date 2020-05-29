@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">HackatonProject</string>
+
+    <string-array name="types">
+        <item>Спорт</item>
+        <item>Самообразование</item>
+    </string-array>
 </resources>

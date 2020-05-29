@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_tasks_menu"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="Tasks" />
+
+    <item
+        android:id="@+id/navigation_assessment_menu"
+        android:icon="@drawable/ic_assessment_black_24dp"
+        android:title="Statistic" />
+
+</menu>
